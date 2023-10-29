@@ -1,0 +1,43 @@
+{% extends 'flatpages/default.html' %}
+{% load bootstrap4 %}
+
+{% block title %}
+Advert
+{% endblock title %}
+
+{% block content %}
+
+{% if post %}
+<div class="card">
+    <div class="card-header">
+        <h3>{{ post.title }}</h3>
+        <div>
+            Автор: <span class="badge bg-info">{{ post.user }}</span>
+        </div>
+        <div>
+            <span>{{ post.dateCreate|date:'d m y, H:i' }}</span>
+        </div>
+        <div>
+            Категория: {{ post.get_category_display }}
+        </div>
+    </div>
+    <div class="card-body">
+        <span>{{ post.text }}</span>
+    </div>
+    {% if request.user.username == post.user %}
+    <div>
+        <span class="card-body"><a href="">Update</a></span>
+        <span class="card-body"><a href="">Delete</a></span>
+        <br>
+        <br>
+    </div>
+    {% endif %}
+</div>
+
+{% else %}
+    <h3>Страница не существует</h3>
+{% endif %}
+
+<br><br>
+
+{% endblock content %}

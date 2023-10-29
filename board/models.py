@@ -20,6 +20,9 @@ class Post(models.Model):
                 ('spell_masters', 'Мастера заклинаний'))
     category = models.CharField(max_length=24, choices=CATEGORY, verbose_name='Category')
 
+    def __str__(self):
+        return f'{self.user.username}, {self.title}, {self.category}, {self.dateCreation}'
+
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -27,3 +30,6 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     text = models.TextField(verbose_name="Message")
     status = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.user.username}, {self.text}, {self.dateCreation}, {self.status}'

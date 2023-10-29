@@ -1,0 +1,19 @@
+{% extends 'flatpages/default.html' %}
+{% load bootstrap4 %}
+
+
+{% block title %}
+Add New Advert
+{% endblock title %}
+
+{% block content %}
+    <br>
+    <h3>Add New Advert</h3><br>
+	<form method="POST" enctype="multipart/form-data">
+		{% csrf_token %}
+        {{ form.media }}
+        {{ form.as_p }}
+		<input class="btn btn-info" type="submit" value="Сохранить">
+	</form><br>
+    <input type=button value="Назад" class="btn btn-secondary" onClick="javascript:history.go(-1);">
+{% endblock content %}

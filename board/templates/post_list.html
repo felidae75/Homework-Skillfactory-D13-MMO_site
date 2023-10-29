@@ -1,0 +1,65 @@
+{% extends 'flatpages/default.html' %}
+{% load bootstrap4 %}
+
+{% block title %}
+Adverts
+{% endblock title %}
+
+{% block content %}
+<h1 class="text-canter">Adverts</h1>
+
+<hr> <br>
+
+<a href="add">
+    <button class="btn btn-info btn-gradient">New Advert</button>
+</a>
+{% if post_list %}
+    <br> <br>
+    <table class="table table-striped table-hover">
+        <tr>
+            <th scope="col">
+                Date
+            </th>
+            <th scope="col">
+                User
+            </th>
+            <th scope="col">
+                Title
+            </th>
+            <th scope="col">
+                Text
+            </th>
+            <th scope="col">
+                Category
+            </th>
+
+        </tr>
+        {% for post in post_list %}
+        <tr>
+            <td>
+                {{ post.dateCreation|date:'d m y' }}
+            </td>
+            <td>
+                {{ post.user }}
+            </td>
+            <td>
+                <a href="{{ post.id }}" class="open-post">{{ post.title }}</a>
+            </td>
+            <td>
+                {{ post.text|truncatechars:20 }}
+            </td>
+            <td>
+                {{ post.get_category_display }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% else %}
+    <h3>Статей нет</h3>
+{% endif %}
+
+{% include 'parts/paginator.html' %}
+
+<br> <br>
+{% endblock content %}
