@@ -1,0 +1,22 @@
+{% extends 'default.html' %}
+{% load bootstrap4 %}
+{% block title %}Profile update{% endblock %}
+{% block content %}
+
+<br><br>
+<h2>Profile update</h2><br>
+
+<form method="post">
+	{% csrf_token %}
+	{% bootstrap_form form layout='horizontal' %}
+	{% buttons submit='Save' %}{% endbuttons %}
+</form>
+{% if is_verify %}
+<p>Enter your email. We'll send you verify code</p>
+<a class="btn btn-secondary" href="{% url 'board:take_code' %}" role="button">Take Code</a>
+<br>
+<br>
+{% endif %}
+<a class="btn btn-secondary" href="{% url 'account_logout' %}" role="button">Logout</a>
+
+{% endblock content %}
