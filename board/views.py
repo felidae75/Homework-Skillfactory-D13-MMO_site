@@ -201,16 +201,14 @@ def take_code(request):
         email_subject = f'MMO: verify e-mail',
         user_emails = [request.user.email, ],
 
-        html = render_to_string(f'Greetings, {request.user.username}! Your verify code {code}  '
-                                f'Confirm your email \nhttp://127.0.0.1:8000/user/verify'),
         msg = EmailMultiAlternatives(
             subject=email_subject,
-            body='',
+            body=f'Greetings, {request.user.username}! Your verify code {code}'
+                 f'Confirm your email \nhttp://127.0.0.1:8000/user/verify',
             from_email=settings.DEFAULT_FROM_EMAIL,
             to=user_emails
         )
 
-        msg.attach_alternative(html, 'text/html')
         msg.send()
         return redirect(f'/mmo/verify')
 
