@@ -23,8 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('pages/', include('django.contrib.flatpages.urls')),
     path('mmo/', include('board.urls')),
-    path('user/', include('forusers.urls')),
-    path('accounts/', include('accounts.urls')),
-    path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('accounts/', include('allauth.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),  # Для загрузки медиа через форму ckeditor
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

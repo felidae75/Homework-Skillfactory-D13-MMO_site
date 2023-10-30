@@ -1,4 +1,4 @@
-{% extends 'flatpages/default.html' %}
+{% extends 'default.html' %}
 {% load bootstrap4 %}
 
 {% block title %}
@@ -8,32 +8,44 @@ Advert
 {% block content %}
 
 {% if post %}
-<div class="card">
+<div class="card" xmlns="http://www.w3.org/1999/html">
     <div class="card-header">
         <h3>{{ post.title }}</h3>
         <div>
-            Автор: <span class="badge bg-info">{{ post.user }}</span>
+            Автор: {{ post.user }}
         </div>
         <div>
             <span>{{ post.dateCreate|date:'d m y, H:i' }}</span>
         </div>
         <div>
-            Категория: {{ post.get_category_display }}
+            <span class="badge bg-info"> {{ post.get_category_display }}</span>
         </div>
     </div>
     <div class="card-body">
-        <span>{{ post.text }}</span>
+        <span>{{ post.text|safe }}</span>
     </div>
-    {% if request.user.username == post.user %}
-    <div>
-        <span class="card-body"><a href="">Update</a></span>
-        <span class="card-body"><a href="">Delete</a></span>
+    {% if request.user == post.user %}
+    <div class="container">
+        <span><a href="{% url 'board:update_post' post.id %}">Update</a></span>
+        <span><a href="{% url 'board:del_post' post.id %}">Delete</a></span>
         <br>
         <br>
     </div>
     {% endif %}
 </div>
-
+    {% if user.is_authenticated %}
+        <br><br>
+<!--        Если пост откомментирован, если это свой пост и если не откомментирован-->
+        {% if is_comment == "y" %}
+            <p>You commented this post</p><br>
+            <a href="{% url 'board:comments' %}">Your comments</a>
+        {% elif is_comment == "My" %}
+            <a href="{% url 'board:comments' %}">Look all answers</a> <br>
+        {% else %}
+            <a href="comment/"><button class="btn btn-info"> Add Comment</button></a>
+        {% endif %}
+    {% endif %}
+    <br><br>
 {% else %}
     <h3>Страница не существует</h3>
 {% endif %}

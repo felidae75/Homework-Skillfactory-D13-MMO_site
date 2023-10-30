@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import *
 
+
 class PostAdmin(admin.ModelAdmin):
     list_display = ('user', 'dateCreation', 'title', 'category')
     list_filter = ('user', 'dateCreation', 'category')
@@ -14,5 +15,5 @@ class CommentAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Post, PostAdmin)
-admin.site.register(Comment, CommentAdmin)
+admin.site.register(CommentPost, CommentAdmin)
 

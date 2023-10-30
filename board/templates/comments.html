@@ -1,0 +1,75 @@
+{% extends 'default.html' %}
+{% load bootstrap4 %}
+{% block title %}Comments{% endblock title %}
+
+{% block content %}
+<br>
+<h1>Comments for my Adverts:</h1><br>
+	<form method="POST">
+		{% csrf_token %}
+        {{ form }}
+		<input class="btn btn-info" type="submit" value="Show">
+	</form><br>
+    {% if title %}
+        <h3>Comment</h3>
+        {% if filter_commemts %}
+            {% for comment in filter_commetns %}
+                <b>Comment: </b>{{ comment.text }}<br>
+                <span><p>User: {{ comment.user.username }} |
+                    Date: {{ comment.dateCreation|date:'d.M.Y' }} г.</p></span><br>
+                    {% if comment.status == False %}
+                        <a href="comments/accept/{{ comment.id }}"><p>Accept</p></a>
+                        <a href="comments/delete/{{ comment.id }}"><p>Nonono</p></a>
+                    {% else %}
+                        <p>It's yours</p>
+                    {% endif %}
+                <br><br>
+            {% endfor %}
+        {% else %}
+            <br>
+            <h5>Nothing</h5>
+        {% endif %}
+    {% else %}
+        <h3>All Adverts' comment</h3>
+        {% if filter_comments %}
+            {% for comment in filter_comments %}
+                <br>
+                <p>Advert: <a href="{{ comment.post_id }}">{{ comment.post.title }}</a></p><br>
+                <p>Comment: {{ comment.text|truncatechars:50|safe }}</p><br>
+                <span>From user: {{ comment.user.username }} ||
+                    Date Comment: {{ comment.dateCreation|date:'d.M.Y' }} г.</span><br><br>
+                    {% if comment.status == False %}
+                        <a href="comments/accept/{{ comment.id }}">Accept</a>
+                        <br>
+                        <a href="comments/delete/{{ comment.id }}">Nonono</a>
+                {% else %}
+                    <p>Accepted</p>
+                {% endif %}
+                <br><hr><br>
+            {% endfor %}
+        {% else %}
+            <h5>Откликов нет!</h5>
+        {% endif %}
+    {% endif %}
+    <br><br>
+    <h3>My Comments</h3>
+    {% if mycomments %}
+        {% for comment in mycomments %}
+            <p>Advert:</p>
+            <a href="{{ comment.post_id }}">{{ comment.post.title }}</a><br>
+            <p>Advert's Author:  {{ comment.post.user.username }} |
+                Advert's Date: {{ comment.post.dateCreation|date:'d.M.Y' }}</p><br>
+            <p>My Comment:</p>
+            {{ comment.text }}<br>
+            <span>Date Comment: {{ comment.dateCreation|date:'d.M.Y' }}</span><br>
+            {% if comment.status == True %}
+                <p>You're in!</p>
+            {% else %}
+                <p>You are not in</p>
+            {% endif %}
+        <br><br>
+        {% endfor %}
+    {% else %}
+        <h5>No Comments!</h5>
+    {% endif %}
+{% endblock content %}

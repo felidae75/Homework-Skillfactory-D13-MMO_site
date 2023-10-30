@@ -1,0 +1,15 @@
+{% extends 'default.html' %}
+{% load bootstrap4 %}
+{% block title %}Comment{% endblock title %}
+{% load static %}
+
+{% block content %}
+    <br>
+    <h3>Comment:</h3><br>
+	<form method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+		{% bootstrap_form form layout='horizontal' %}
+		<input class="btn btn-info" type="submit" value="Save">
+	</form><br>
+    <input type=button value="Back" class="btn btn-secondary" onClick="javascript:history.go(-1);">
+{% endblock content %}

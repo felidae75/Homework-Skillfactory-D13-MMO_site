@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     # New app for filters
     'django_filters',
-    # New app for auth
+    # New app for accuont
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -56,11 +56,64 @@ INSTALLED_APPS = [
 
     # Created apps
     'board',
-    'forusers',
+
 ]
 
 SITE_ID = 1
 
+
+# Настройка формы объявления
+CKEDITOR_CONFIGS = {
+    'default': {
+        'skin': 'moono',
+        # 'skin': 'office2013',
+        'extraPlugins': ','.join([
+            'uploadimage',  # the upload image feature
+            # your extra plugins here
+            'autolink',
+            'autoembed',
+            'embedsemantic',
+            'autogrow',
+            'devtools',
+            'widget',
+            'lineutils',
+            'clipboard',
+            'elementspath',
+
+            'codesnippet',
+            'youtube',
+        ]),
+        'toolbar_Basic': [
+            ['Source', '-', 'Bold', 'Italic']
+        ],
+        'toolbar_YourCustomToolbarConfig': [
+            {'name': 'basicstyles',
+             'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
+            {'name': 'paragraph',
+             'items': ['NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']},
+            {'name': 'links', 'items': ['Link', 'Unlink']},
+            {'name': 'insert',
+             'items': ['Image', 'Flash', 'HorizontalRule', 'Smiley', 'Youtube']},
+            '/',
+            {'name': 'styles', 'items': ['Styles', 'Format', 'FontSize']},
+            {'name': 'colors', 'items': ['TextColor']},
+            {'name': 'yourcustomtools', 'items': [
+                # put the name of your editor.ui.addButton here
+                'Preview',
+                'Maximize',
+            ]},
+        ],
+        'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
+        # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
+        # 'height': 291,
+        'width': '140%',
+        # 'filebrowserWindowHeight': 725,
+        # 'filebrowserWindowWidth': 940,
+        # 'toolbarCanCollapse': True,
+        # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+        'tabSpaces': 4,
+            }
+}
 
 # Папка для загрузки медиа-файлов из объявления
 CKEDITOR_UPLOAD_PATH = 'media/'
@@ -84,7 +137,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         # 'DIRS': [],
-        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'accounts', 'templates', 'allauth')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates', 'allauth')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -95,6 +148,15 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+# For allauth
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 WSGI_APPLICATION = 'mmosite.wsgi.application'
@@ -150,11 +212,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # New
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 MEDIA_ROOT = 'media/'  # Тут хранятся файлы
 MEDIA_URL = '/media/'  # Обращения от основного хоста
 
-LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/board/'
+LOGIN_URL = '/accuonts/login/'
+LOGIN_REDIRECT_URL = '/'
 
 # For allauth
 ACCOUNT_EMAIL_REQUIRED = True
@@ -163,24 +227,17 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-]
 
-EMAIL_HOST_USER = "username"
-EMAIL_HOST_PASSWORD = ""
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER + "@yandex.ru"
 
-EMAIL_HOST = 'smtp.yandex.ru'
-EMAIL_PORT = 465
-# EMAIL_USE_TLS = True
-EMAIL_USE_SSL = True
-
-if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    # Если письмо не отправляется в мир, оно отправляется в консоль
-    # Для теста, что оно вообще отправляется
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '587'
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'test@gmail.com'
+EMAIL_HOST_PASSWORD = 'password'
+EMAIL_SERVER = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_ADMIN = ['m.pws.g.acc@gmail.com']
 
 CACHES = {
     'default': {

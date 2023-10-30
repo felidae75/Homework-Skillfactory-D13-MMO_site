@@ -1,0 +1,54 @@
+{% load static %}
+<header class="p-3 text-bg-dark">
+    {% load cache %}   <!-- Кэширование -->
+    {% cache 60 header %}
+    {% block header %}
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <img src="{% static 'icons/logo.svg' %}" alt="logo" width="33" height="33">
+            </a>
+
+       <ul class="btn-group btn-group-toggle nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0" data-toggle="buttons">
+           <li>
+               <a href="/" class="nav-link px-2 text-info">
+                    <button class="btn btn-outline-info">
+                        Home
+                    </button>
+               </a>
+           </li>
+           <li>
+               <a href="{% url 'board:posts_view' %}" class="nav-link px-2 text-info">
+                   <button class="btn btn-outline-info">
+                       Adverts
+                   </button>
+               </a>
+           </li>
+           <li>
+               <a href="/" class="nav-link px-2 text-info">
+                    <button class="btn btn-outline-info">
+                        None
+                    </button>
+               </a>
+           </li>
+        </ul>
+       {% endblock header %}
+       {% endcache %}
+
+       {% if request.user.username %}
+<!--     Если пользователь авторизован, показывается имя и кнопка выхода-->
+            <div class="text-end">
+                <a href="{% url 'board:comments' %}"><button class="btn btn-outline-info">Comments</button></a>
+                <a href="{% url 'board:profile_edit' %}"><button class="btn btn-outline-info">{{request.user.username}}</button></a>
+                <a href="{% url 'account_logout' %}"><button type="button" class="btn btn-light">Logout</button></a>
+            </div>
+            {% else %}
+<!--     Если не авторизован, предлагает авторизацию-->
+            <div class="text-end">
+                <a href="{% url 'account_signup' %}"><button type="button" class="btn btn-light">Registration</button></a>
+                <a href="{% url 'account_login' %}"><button type="button" class="btn btn-outline-info">Login</button></a>
+            </div>
+       {% endif %}
+   </div>
+ </div>
+</header>

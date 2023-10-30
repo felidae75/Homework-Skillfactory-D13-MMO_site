@@ -1,0 +1,28 @@
+{% extends 'default.html' %}
+{% load bootstrap4 %}
+{% block title %}Profile{% endblock %}
+
+
+{% block content %}
+
+    <br><br>
+    <h3>Your Profile: </h3>
+    <br>
+    <h5>User name: {{user.username}}</h5>
+    <h5>E-mail: {{user.email}}</h5>
+
+    <br><br>
+    <a class="btn btn-secondary" href="{% url 'account_logout' %}" role="button">Выйти из аккаунта</a>
+
+    <br><br><br>
+    {% if not verify %}
+        <h5>Enter your verify code </h5><br>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form }}
+            <input class="btn btn-info" type="submit" value="Check">
+        </form>
+    {% else %}
+        <p>Your email is checked</p>
+    {% endif %}
+{% endblock %}
